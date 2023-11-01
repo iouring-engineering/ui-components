@@ -1,19 +1,20 @@
 {
-  "name": "@iouring-engineering/react-heatmap",
+  "name": "@iouring-engineering/ui-components",
   "version": "1.0.0",
-  "description": "React Heatmap Package for Market Data",
+  "description": "React UI Components",
   "keywords": [
+    "ui components",
+    "react ui components",
     "heatmap",
     "react heatmap",
-    "market heatmap",
-    "react heatmap for market data"
+    "market heatmap"
   ],
   "scripts": {
     "build": "rollup -c"
   },
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
-  "typings": "iouring-engineering__react-heatmap.d.ts",
+  "typings": "iouring-engineering__ui-components.d.ts",
   "author": "Devika Das",
   "license": "ISC",
   "dependencies": {

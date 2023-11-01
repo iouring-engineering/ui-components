@@ -6,8 +6,6 @@ export interface HeatmapFilter {
     filterCondition: (item: any) => boolean
 }
 
-export type ThemeType = "light" | "dark" | "black"
-
 export type ContentNodeProps = {
     tileElement: Record<string, any>
 }
@@ -21,7 +19,6 @@ export interface HeatmapViewProps {
     tileHeight?: string
     tileWidth?: string
     textColor?: string
-    theme?: ThemeType
     filterKey?: string
     tileAnimation?: boolean
     resetFilter?: boolean
