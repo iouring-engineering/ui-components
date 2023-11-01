@@ -1,0 +1,122 @@
+@mixin BoxBorderRadius() {
+    border-radius: 2px;
+}
+
+@mixin BoxBorder() {
+    border: 1px solid $border-color;
+}
+
+@mixin flex($justify, $align) {
+    display: flex;
+    justify-content: $justify;
+    align-items: $align;
+}
+
+@function appendunit($fontInPx) {
+    @return $fontInPx + rem;
+}
+
+@mixin fontSize($fontInPx, $imp) {
+    @if $imp ==true {
+        font-size: calc(appendunit($fontInPx) / 16) !important;
+    }
+
+    @else {
+        font-size: calc(appendunit($fontInPx) / 16);
+    }
+}
+
+@mixin font($fontSize, $imp: false) {
+    @include fontSize($fontSize, $imp);
+}
+
+.heatmap-container {
+    height: calc(100% - 92px);
+    .heatmap-filter-container {
+        padding: 5px 0 7px;
+
+        .heatmap-filters {
+            @include BoxBorderRadius;
+            @include BoxBorder;
+            @include flex(center, center);
+
+            height: 40px;
+            width: max-content;
+            margin: auto;
+            position: relative;
+
+            .filter-box {
+                @include BoxBorderRadius();
+                @include font(12);
+                @include flex(center, center);
+
+                margin-right: 15px;
+                cursor: pointer;
+
+                &:first-child {
+                    margin-left: 15px;
+                }
+
+                .filter-bg {
+                    width: 84px;
+                    height: 20px;
+                    border-radius: inherit;
+
+                    &.selected-filter {
+                        border: 1px solid $heatmap-text-color;
+                        width: 104px;
+                        height: 26px;
+                    }
+                }
+
+                .filter-content {
+                    @include flex(center, center);
+
+                    position: absolute;
+                    text-transform: none;
+                }
+            }
+        }
+    }
+
+    .heatmap-view-wrap {
+        display: grid;
+        row-gap: 10px !important;
+        column-gap: 10px;
+        padding: 0 10px 10px;
+        height: calc(100% - 65px);
+        overflow: auto;
+
+        &.heatmap-results-empty {
+            display: flex;
+        }
+
+        .heatmap-card {
+            @include BoxBorderRadius;
+
+            position: relative;
+
+            .transparency-wrapper {
+                position: absolute;
+                z-index: 1;
+                border-radius: inherit;
+                height: 100%;
+                width: 100%;
+            }
+
+            .card-wrapper {
+                @include flex(space-between, flex-start);
+
+                cursor: pointer;
+                flex-direction: column;
+                height: 100%;
+                width: 100%;
+                border-radius: inherit;
+                padding: 10px;
+                box-sizing: border-box;
+                position: absolute;
+                z-index: 2;
+            }
+        }
+    }
+}
