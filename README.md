@@ -59,6 +59,14 @@ Props for configuring the `Heatmap` component.
 - `heatmapFilters?: HeatmapFilter[]` (Optional): An array of heatmap filter definitions to categorize and style the data displayed in the heatmap. If not provided, the default filters will be used.
 
 - `ContentNode: React.FC<ContentNodeProps>`: A required React component used for rendering the content of each heatmap tile.
+The tileElement prop can be any item from the `heatmapList`, allowing for flexibility in the type of data that can be passed to the ContentNode component. The `ContentNodeProps` type is defined as follows:
+
+  ```typescript
+  type ContentNodeProps = {
+    tileElement: Record<string, any>;
+  };
+  ```
+
 
 - `emptyContentNode?: React.ReactNode` (Optional): Custom content to be displayed when there is no data in the heatmap.
 
