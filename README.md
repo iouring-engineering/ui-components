@@ -67,7 +67,6 @@ The tileElement prop can be any item from the `heatmapList`, allowing for flexib
   };
   ```
 
-
 - `emptyContentNode?: React.ReactNode` (Optional): Custom content to be displayed when there is no data in the heatmap.
 
 - `handleTileClick?: (item: any) => void` (Optional): A callback function to handle tile clicks with the selected item as a parameter.
