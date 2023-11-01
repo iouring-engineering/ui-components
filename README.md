@@ -33,7 +33,7 @@ The React Heatmap is an easy-to-use component for visualizing market data, such 
 You can easily integrate the library into your React application. Here's a basic example of how to use the `Heatmap` component:
 
 ```jsx
-import React from 'react';
+import React from "react";
 import { Heatmap } from "@iouring-engineering/ui-components";
 
 const App = () => {
