@@ -37,12 +37,34 @@ import React from "react";
 import { Heatmap } from "@iouring-engineering/ui-components";
 
 const App = () => {
-  const marketData = /* Your market data here */;
+  const marketData = [
+    {
+      stock: "WIPRO",
+      ltp: "383.35",
+      change: "2.40",
+      changePercent: "0.63"
+    },
+    {
+      stock: "SBIN",
+      ltp: "569.10",
+      change: "2.70",
+      changePercent: "0.47"
+    },
+    {
+      stock: "MARUTI",
+      ltp: "10220.00",
+      change: "-7.75",
+      changePercent: "-0.07"
+    }
+  ];
 
   return (
     <div>
       <h1>Market Heatmap</h1>
-      <Heatmap heatmapList={marketData} />
+      <Heatmap
+        heatmapList={marketData}
+        filterKey="changePercent" // Filtering is performed based on the 'changePercent' property
+      />
     </div>
   );
 }
@@ -150,40 +172,40 @@ const App = () => {
             label: "Above +5%",
             backgroundColor: "limegreen",
             opacity: 1,
-            filterCondition: (chngPerValue: number) => {
-                return chngPerValue > 5;
+            filterCondition: (changeValue: number) => {
+                return changeValue > 5;
             }
         },
         {
             label: "0 to +5 %",
             backgroundColor: "limegreen",
             opacity: 0.5,
-            filterCondition: (chngPerValue: number) => {
-                return chngPerValue > 0 && chngPerValue < 5;
+            filterCondition: (changeValue: number) => {
+                return changeValue > 0 && changeValue < 5;
             }
         },
         {
             label: "0%",
             backgroundColor: "antiquewhite",
             opacity: 1,
-            filterCondition: (chngPerValue: number) => {
-                return chngPerValue === 0;
+            filterCondition: (changeValue: number) => {
+                return changeValue === 0;
             }
         },
         {
             label: "-5 to 0 %",
             backgroundColor: "orangered",
             opacity: 0.5,
-            filterCondition: (chngPerValue: number) => {
-                return chngPerValue > -5 && chngPerValue < 0;
+            filterCondition: (changeValue: number) => {
+                return changeValue > -5 && changeValue < 0;
             }
         },
         {
             label: "Below -5%",
             backgroundColor: "orangered",
             opacity: 1,
-            filterCondition: (chngPerValue: number) => {
-                return chngPerValue < -5;
+            filterCondition: (changeValue: number) => {
+                return changeValue < -5;
             }
         }
         // Add more custom filters as needed
