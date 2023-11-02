@@ -5,6 +5,7 @@ import { default as external, default as peerDepsExternal } from 'rollup-plugin-
 import postcss from 'rollup-plugin-postcss';
 import { terser } from 'rollup-plugin-terser';
 import packageJson from "./package.json" assert { type: "json" };
+import preserveDirectives from "rollup-plugin-preserve-directives";
 
 export default {
     input: 'src/index.ts',
@@ -12,7 +13,14 @@ export default {
         {
             file: packageJson.main,
             format: 'cjs',
-            sourcemap: false
+            sourcemap: false,
+            banner: "'use client';"
+        },
+        {
+            file: packageJson.module,
+            format: 'esm',
+            sourcemap: false,
+            banner: "'use client';"
         }
     ],
     plugins: [
@@ -21,7 +29,8 @@ export default {
         commonjs(),
         typescript({ tsconfig: './tsconfig.json' }),
         postcss(),
-        terser()
+        terser(),
+        preserveDirectives()
     ],
     external: ["react", "react-dom"]
 }

@@ -1,10 +1,36 @@
 import "../assets/styles/index.scss";
 
 import { Button, Grow } from "@mui/material";
-import { HeatmapFilter, HeatmapViewProps } from "./Heatmap.types";
 import React, { useEffect, useState } from "react";
 
 import { getDefaultHeatmapFilters } from "./DefaultProps";
+
+export interface HeatmapFilter {
+    label: string
+    backgroundColor?: string,
+    opacity?: number,
+    className?: string,
+    filterCondition: (item: any) => boolean
+}
+
+export type HeatmapContentNodeProps = {
+    tileElement: Record<string, any>
+}
+
+interface HeatmapViewProps {
+    heatmapList: Array<Record<string, any>>
+    heatmapFilters?: HeatmapFilter[]
+    ContentNode: React.FC<HeatmapContentNodeProps>
+    emptyContentNode?: React.ReactNode
+    handleTileClick?: (item: any) => void
+    tileHeight?: string
+    tileWidth?: string
+    textColor?: string
+    filterKey?: string
+    tileAnimation?: boolean
+    resetFilter?: boolean
+    hideFilters?: boolean
+}
 
 export const Heatmap = (props: HeatmapViewProps) => {
     const {
