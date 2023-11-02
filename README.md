@@ -123,7 +123,7 @@ const App = () => {
     <div>
       <h1>Custom Content Rendering Example</h1>
       <Heatmap
-        heatmapList={sampleData}
+        heatmapList={watchlistStocks}
         ContentNode={HeatmapContent}
         // Other props go here
       />
