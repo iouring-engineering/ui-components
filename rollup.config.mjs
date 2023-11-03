@@ -49,7 +49,7 @@ const subfolderPlugins = (folderName) => [
     generatePackageJson({
         baseContents: {
             name: `${packageJson.name}/${folderName}`,
-            private: true,
+            private: false,
             main: "./index.cjs.js", // --> points to cjs format entry point of whole library
             module: "./index.js", // --> points to esm format entry point of individual component
             types: "./index.d.ts", // --> points to types definition file of individual component
@@ -109,6 +109,10 @@ function addPackageJson() {
         "@mui/material": ">=5.13.4",
         "react": ">=17.0.2",
         "react-dom": ">=17.0.2"
+    },
+    "publishConfig": {
+        "registry": "https://registry.npmjs.org",
+        "access": "public"
     }
 }`;
 
