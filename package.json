@@ -1,0 +1,53 @@
+{
+  "name": "@iouring-engineering/ui-components",
+  "version": "0.0.1",
+  "description": "React UI Components",
+  "keywords": [
+    "ui components",
+    "react ui components",
+    "heatmap",
+    "react heatmap",
+    "market heatmap"
+  ],
+  "scripts": {
+    "build": "rimraf lib && rollup -c"
+  },
+  "main": "lib/index.js",
+  "module": "lib/index.esm.js",
+  "types": "lib/index.d.ts",
+  "author": "Devika Das",
+  "license": "ISC",
+  "peerDependencies": {
+    "@mui/material": ">=5.13.4",
+    "react": ">=17.0.2",
+    "react-dom": ">=17.0.2"
+  },
+  "devDependencies": {
+    "@rollup/plugin-babel": "^6.0.4",
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-replace": "^5.0.5",
+    "@rollup/plugin-typescript": "^11.1.5",
+    "@types/react": ">=17.0.43",
+    "@types/react-dom": ">=17.0.14",
+    "@typescript-eslint/eslint-plugin": "^6.9.1",
+    "eslint-plugin-etc": "^2.0.3",
+    "eslint-plugin-import": "^2.29.0",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-func": "^0.1.18",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-unicorn": "^49.0.0",
+    "eslint-plugin-unused-imports": "^3.0.0",
+    "postcss-scss": ">=4.0.3",
+    "rimraf": "^5.0.5",
+    "rollup": "^2.79.1",
+    "rollup-plugin-generate-package-json": "^3.2.0",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "rollup-plugin-postcss": "^4.0.2",
+    "rollup-plugin-preserve-directives": "^0.2.0",
+    "rollup-plugin-terser": "^7.0.2",
+    "sass": ">=1.49.9",
+    "tslib": "^2.6.2",
+    "typescript": ">=4.7.4"
+  }
+}

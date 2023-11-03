@@ -1,0 +1,14 @@
+node_modules/
+src/
+.gitignore
+.npmignore
+.github/
+vscode
+.vscode
+.editorconfig
+package-lock.json
+tsconfig.json
+rollup.config.mjs
+.stylelintrc.json
+.eslintrc.js
+.babelrc

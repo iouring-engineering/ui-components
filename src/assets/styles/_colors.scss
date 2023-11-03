@@ -1,0 +1,14 @@
+:root {
+  --heatmap-positive: #38b990;
+  --heatmap-zero: #a0a0a0;
+  --heatmap-negative: #f85454;
+  --heatmap-text-color: #000;
+  --border-color: #eceef4;
+}
+
+// Color Variables
+$heatmap-positive: var(--heatmap-positive);
+$heatmap-zero: var(--heatmap-zero);
+$heatmap-negative: var(--heatmap-negative);
+$heatmap-text-color: var(--heatmap-text-color);
+$border-color: var(--border-color);
