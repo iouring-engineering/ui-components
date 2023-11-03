@@ -8,6 +8,7 @@ import packageJson from "./package.json" assert { type: "json" };
 import replace from "@rollup/plugin-replace";
 import generatePackageJson from "rollup-plugin-generate-package-json";
 import fs from "fs"
+import path from "path"
 
 const IGNORED_DIRECTORIES = ["assets"]
 
@@ -77,6 +78,45 @@ const folderBuilds = getFoldersInDirectory('src').map((folder) => {
         external: ['react', 'react-dom'],
     };
 });
+
+function addPackageJson() {
+    const packageFile = `{
+    "name": "@iouring-engineering/ui-components",
+    "version": "${packageJson.version}",
+    "description": "React UI Components",
+    "private": false,
+    "author": "Devika Das",
+    "homepage": "https://iouring.com/",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/iouring-engineering/ui-components"
+    },
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/iouring-engineering/ui-components/issues"
+    },
+    "keywords": [
+        "ui components",
+        "react ui components",
+        "heatmap",
+        "react heatmap",
+        "market heatmap"
+    ],
+    "main": "index.js",
+    "module": "index.esm.js",
+    "types": "index.d.ts",
+    "peerDependencies": {
+        "@mui/material": ">=5.13.4",
+        "react": ">=17.0.2",
+        "react-dom": ">=17.0.2"
+    }
+}`;
+
+    !fs.existsSync("lib/") && fs.mkdirSync("lib/");
+    fs.writeFileSync(path.resolve("lib/", 'package.json'), packageFile);
+}
+
+addPackageJson()
 
 export default [
     {
