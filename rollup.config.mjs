@@ -1,31 +1,43 @@
-import commonjs from '@rollup/plugin-commonjs';
-import resolve from '@rollup/plugin-node-resolve';
-import typescript from '@rollup/plugin-typescript';
-import peerDepsExternal from 'rollup-plugin-peer-deps-external';
-import postcss from 'rollup-plugin-postcss';
-import { terser } from 'rollup-plugin-terser';
+import commonjs from "@rollup/plugin-commonjs";
+import resolve from "@rollup/plugin-node-resolve";
+import typescript from "@rollup/plugin-typescript";
+import peerDepsExternal from "rollup-plugin-peer-deps-external";
+import postcss from "rollup-plugin-postcss";
+import { terser } from "rollup-plugin-terser";
 import packageJson from "./package.json" assert { type: "json" };
 import replace from "@rollup/plugin-replace";
 import generatePackageJson from "rollup-plugin-generate-package-json";
-import fs from "fs"
-import path from "path"
+import fs from "fs";
+import path from "path";
 
-const IGNORED_DIRECTORIES = ["assets"]
+async function checkFileExistence(filePath) {
+    try {
+        await fs.access(filePath);
+    } catch (fileErr) {
+        return false;
+    }
+    return true;
+}
+
+const IGNORED_DIRECTORIES = [
+    "assets"
+];
 
 function getFoldersInDirectory(directoryPath) {
     try {
         const folderNames = fs.readdirSync(directoryPath);
         const folders = folderNames.filter((name) => {
             if (IGNORED_DIRECTORIES.includes(name)) {
-                return false
+                return false;
             }
             const fullPath = `${directoryPath}/${name}`;
             return fs.statSync(fullPath).isDirectory();
         });
         return folders;
     } catch (error) {
-        console.error('Error reading directory:', error);
-        return [];
+        console.error("Error reading directory:", error);
+        return [
+        ];
     }
 }
 
@@ -40,42 +52,46 @@ const plugins = [
     terser(),
 ];
 
-const subfolderPlugins = (folderName) => [
-    ...plugins,
-    typescript({
-        tsconfig: './tsconfig.json',
-        declaration: false
-    }),
-    generatePackageJson({
-        baseContents: {
-            name: `${packageJson.name}/${folderName}`,
-            private: false,
-            main: "./index.cjs.js", // --> points to cjs format entry point of whole library
-            module: "./index.js", // --> points to esm format entry point of individual component
-            types: "./index.d.ts", // --> points to types definition file of individual component
-        },
-    }),
-];
+const subfolderPlugins = (folderName) => {
+    return [
+        ...plugins,
+        typescript({
+            tsconfig: "./tsconfig.json",
+            declaration: false
+        }),
+        generatePackageJson({
+            baseContents: {
+                name: `${packageJson.name}/${folderName}`,
+                private: false,
+                main: "./index.cjs.js", // --> points to cjs format entry point of whole library
+                module: "./index.js", // --> points to esm format entry point of individual component
+                types: "./index.d.ts", // --> points to types definition file of individual component
+            },
+        }),
+    ];
+};
 
-const folderBuilds = getFoldersInDirectory('src').map((folder) => {
+const folderBuilds = getFoldersInDirectory("src").map((folder) => {
     return {
         input: `src/${folder}/index.ts`,
         output: [
             {
                 file: `lib/${folder}/index.js`,
                 sourcemap: false,
-                exports: 'named',
-                format: 'esm',
+                exports: "named",
+                format: "esm",
             },
             {
                 file: `lib/${folder}/index.cjs.js`,
                 sourcemap: false,
-                exports: 'named',
-                format: 'cjs',
+                exports: "named",
+                format: "cjs",
             }
         ],
         plugins: subfolderPlugins(folder),
-        external: ['react', 'react-dom'],
+        external: [
+            "react", "react-dom"
+        ],
     };
 });
 
@@ -117,14 +133,24 @@ function addPackageJson() {
 }`;
 
     !fs.existsSync("lib/") && fs.mkdirSync("lib/");
-    fs.writeFileSync(path.resolve("lib/", 'package.json'), packageFile);
+    fs.writeFileSync(path.resolve("lib/", "package.json"), packageFile);
 }
 
-addPackageJson()
+async function addReadme() {
+    if (await checkFileExistence("README.md")) {
+        console.log("aaaaa");
+        fs.createReadStream("README.md").pipe(fs.createWriteStream(path.resolve("lib/", "README.md")));
+    }
+}
+
+addPackageJson();
+addReadme();
 
 export default [
     {
-        input: ["src/index.ts"],
+        input: [
+            "src/index.ts"
+        ],
         output: [
             {
                 file: packageJson.module,
@@ -142,12 +168,14 @@ export default [
         plugins: [
             ...plugins,
             typescript({
-                tsconfig: './tsconfig.json',
+                tsconfig: "./tsconfig.json",
                 declaration: true,
                 declarationDir: "lib"
             })
         ],
-        external: ["react", "react-dom"],
+        external: [
+            "react", "react-dom"
+        ],
     },
     ...folderBuilds,
 ];
