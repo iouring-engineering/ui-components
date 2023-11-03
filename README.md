@@ -2,7 +2,9 @@
 
 UI Components for React Applications.
 
-<https://github.com/iouring-engineering/ui-components>
+[GitHub Repository](https://github.com/iouring-engineering/ui-components)
+
+[NPM Package](https://www.npmjs.com/package/@iouring-engineering/ui-components)
 
 ## Table of Contents
 
@@ -16,7 +18,7 @@ UI Components for React Applications.
 
 ## Installation
 
-To get started, you can install the package using npm:
+To get started, you can install the package using [npm](https://www.npmjs.com/package/@iouring-engineering/ui-components):
 
 ```bash
 npm install @iouring-engineering/ui-components
