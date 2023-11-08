@@ -12,11 +12,11 @@ import path from "path";
 
 async function checkFileExistence(filePath) {
     try {
-        await fs.access(filePath);
+        await fs.promises.access(filePath, fs.constants.F_OK);
+        return true;
     } catch (fileErr) {
         return false;
     }
-    return true;
 }
 
 const IGNORED_DIRECTORIES = [
@@ -137,9 +137,17 @@ function addPackageJson() {
 }
 
 async function addReadme() {
-    if (await checkFileExistence("README.md")) {
-        console.log("aaaaa");
-        fs.createReadStream("README.md").pipe(fs.createWriteStream(path.resolve("lib/", "README.md")));
+    const scriptDir = path.dirname(new URL(import.meta.url).pathname);
+    // Remove the extra drive letter from the path
+    const rootDir = scriptDir.replace(/^\/[A-Za-z]:/, '');
+    const readmePath = path.resolve(rootDir, "README.md");
+
+    if (await checkFileExistence(readmePath)) {
+        console.log(`Copying README.md from ${readmePath} to lib/README.md`);
+        fs.createReadStream(readmePath).pipe(fs.createWriteStream(path.resolve("lib", "README.md")));
+        console.log("README.md copied successfully!");
+    } else {
+        console.log("README.md not found.");
     }
 }
 
