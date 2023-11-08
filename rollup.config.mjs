@@ -136,23 +136,23 @@ function addPackageJson() {
     fs.writeFileSync(path.resolve("lib/", "package.json"), packageFile);
 }
 
-async function addReadme() {
+async function addFile(filename) {
     const scriptDir = path.dirname(new URL(import.meta.url).pathname);
     // Remove the extra drive letter from the path
     const rootDir = scriptDir.replace(/^\/[A-Za-z]:/, '');
-    const readmePath = path.resolve(rootDir, "README.md");
+    const filePath = path.resolve(rootDir, filename);
 
-    if (await checkFileExistence(readmePath)) {
-        console.log(`Copying README.md from ${readmePath} to lib/README.md`);
-        fs.createReadStream(readmePath).pipe(fs.createWriteStream(path.resolve("lib", "README.md")));
-        console.log("README.md copied successfully!");
+    if (await checkFileExistence(filePath)) {
+        console.log(`Copying ${filename} from ${filePath} to lib/${filename}`);
+        fs.createReadStream(filePath).pipe(fs.createWriteStream(path.resolve("lib", filename)));
+        console.log(`${filename} copied successfully!`);
     } else {
-        console.log("README.md not found.");
+        console.log(`${filename} not found.`);
     }
 }
 
 addPackageJson();
-addReadme();
+addFile("README.md");
 
 export default [
     {
