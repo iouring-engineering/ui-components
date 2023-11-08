@@ -3,7 +3,7 @@
 }
 
 @mixin BoxBorder() {
-    border: 1px solid $border-color;
+    border: 1px solid $lib-border-color;
 }
 
 @mixin flex($justify, $align) {
@@ -63,7 +63,7 @@
                     border-radius: inherit;
 
                     &.selected-filter {
-                        border: 1px solid $heatmap-text-color;
+                        border: 1px solid $heatmap-lib-text-color;
                         width: 104px;
                         height: 26px;
                     }
