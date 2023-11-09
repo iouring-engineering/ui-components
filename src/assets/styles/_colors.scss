@@ -1,14 +1,14 @@
 :root {
-  --heatmap-positive: #38b990;
-  --heatmap-zero: #a0a0a0;
-  --heatmap-negative: #f85454;
-  --heatmap-text-color: #000;
-  --border-color: #eceef4;
+  --heatmap-lib-positive: #38b990;
+  --heatmap-lib-zero: #a0a0a0;
+  --heatmap-lib-negative: #f85454;
+  --heatmap-lib-text-color: #000;
+  --lib-border-color: #eceef4;
 }
 
 // Color Variables
-$heatmap-positive: var(--heatmap-positive);
-$heatmap-zero: var(--heatmap-zero);
-$heatmap-negative: var(--heatmap-negative);
-$heatmap-text-color: var(--heatmap-text-color);
-$border-color: var(--border-color);
+$heatmap-lib-positive: var(--heatmap-lib-positive);
+$heatmap-lib-zero: var(--heatmap-lib-zero);
+$heatmap-lib-negative: var(--heatmap-lib-negative);
+$heatmap-lib-text-color: var(--heatmap-lib-text-color);
+$lib-border-color: var(--lib-border-color);

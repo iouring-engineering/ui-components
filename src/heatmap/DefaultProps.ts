@@ -3,7 +3,7 @@ export const getDefaultHeatmapFilters = () => {
     return [
         {
             label: "Above +5%",
-            backgroundColor: "var(--heatmap-positive)",
+            backgroundColor: "var(--heatmap-lib-positive)",
             opacity: 1,
             filterCondition: (value: number) => {
                 return value > 5;
@@ -11,7 +11,7 @@ export const getDefaultHeatmapFilters = () => {
         },
         {
             label: "+2 to +5 %",
-            backgroundColor: "var(--heatmap-positive)",
+            backgroundColor: "var(--heatmap-lib-positive)",
             opacity: 0.8,
             filterCondition: (value: number) => {
                 return value >= 2 && value <= 5;
@@ -19,7 +19,7 @@ export const getDefaultHeatmapFilters = () => {
         },
         {
             label: "0 to +2 %",
-            backgroundColor: "var(--heatmap-positive)",
+            backgroundColor: "var(--heatmap-lib-positive)",
             opacity: 0.5,
             filterCondition: (value: number) => {
                 return value > 0 && value < 2;
@@ -27,7 +27,7 @@ export const getDefaultHeatmapFilters = () => {
         },
         {
             label: "0%",
-            backgroundColor: "var(--heatmap-zero)",
+            backgroundColor: "var(--heatmap-lib-zero)",
             opacity: 1,
             filterCondition: (value: number) => {
                 return value === 0;
@@ -35,7 +35,7 @@ export const getDefaultHeatmapFilters = () => {
         },
         {
             label: "0 to -2 %",
-            backgroundColor: "var(--heatmap-negative)",
+            backgroundColor: "var(--heatmap-lib-negative)",
             opacity: 0.5,
             filterCondition: (value: number) => {
                 return value > -2 && value < 0;
@@ -43,7 +43,7 @@ export const getDefaultHeatmapFilters = () => {
         },
         {
             label: "-2 to -5 %",
-            backgroundColor: "var(--heatmap-negative)",
+            backgroundColor: "var(--heatmap-lib-negative)",
             opacity: 0.8,
             filterCondition: (value: number) => {
                 return value >= -5 && value <= -2;
@@ -51,7 +51,7 @@ export const getDefaultHeatmapFilters = () => {
         },
         {
             label: "Below -5%",
-            backgroundColor: "var(--heatmap-negative)",
+            backgroundColor: "var(--heatmap-lib-negative)",
             opacity: 1,
             filterCondition: (value: number) => {
                 return value < -5;

@@ -12,11 +12,11 @@ import path from "path";
 
 async function checkFileExistence(filePath) {
     try {
-        await fs.access(filePath);
+        await fs.promises.access(filePath, fs.constants.F_OK);
+        return true;
     } catch (fileErr) {
         return false;
     }
-    return true;
 }
 
 const IGNORED_DIRECTORIES = [
@@ -136,15 +136,23 @@ function addPackageJson() {
     fs.writeFileSync(path.resolve("lib/", "package.json"), packageFile);
 }
 
-async function addReadme() {
-    if (await checkFileExistence("README.md")) {
-        console.log("aaaaa");
-        fs.createReadStream("README.md").pipe(fs.createWriteStream(path.resolve("lib/", "README.md")));
+async function addFile(filename) {
+    const scriptDir = path.dirname(new URL(import.meta.url).pathname);
+    // Remove the extra drive letter from the path
+    const rootDir = scriptDir.replace(/^\/[A-Za-z]:/, '');
+    const filePath = path.resolve(rootDir, filename);
+
+    if (await checkFileExistence(filePath)) {
+        console.log(`Copying ${filename} from ${filePath} to lib/${filename}`);
+        fs.createReadStream(filePath).pipe(fs.createWriteStream(path.resolve("lib", filename)));
+        console.log(`${filename} copied successfully!`);
+    } else {
+        console.log(`${filename} not found.`);
     }
 }
 
 addPackageJson();
-addReadme();
+addFile("README.md");
 
 export default [
     {
