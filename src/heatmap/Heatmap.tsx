@@ -30,6 +30,9 @@ interface HeatmapViewProps {
     tileAnimation?: boolean
     resetFilter?: boolean
     hideFilters?: boolean
+    positiveCardColor?:string
+    negativeCardColor?: string
+    zeroCardColor?: string
 }
 
 export const Heatmap = (props: HeatmapViewProps) => {
@@ -45,10 +48,14 @@ export const Heatmap = (props: HeatmapViewProps) => {
         filterKey,
         tileAnimation,
         resetFilter,
-        hideFilters
+        hideFilters,
+        negativeCardColor,
+        positiveCardColor,
+        zeroCardColor
     } = props;
 
-    const heatmapFiltersList: Array<HeatmapFilter> = heatmapFilters && heatmapFilters.length ? heatmapFilters : getDefaultHeatmapFilters();
+    const heatmapFiltersList: Array<HeatmapFilter> = heatmapFilters && heatmapFilters.length ? heatmapFilters 
+    : getDefaultHeatmapFilters(negativeCardColor, positiveCardColor, zeroCardColor);
 
     const [
         selectedFilterIndex,
