@@ -8,6 +8,7 @@ import { getDefaultHeatmapFilters } from "./DefaultProps";
 export interface HeatmapFilter {
     label: string
     backgroundColor?: string,
+    borderColor?: string
     opacity?: number,
     className?: string,
     filterCondition: (item: any) => boolean
@@ -15,6 +16,12 @@ export interface HeatmapFilter {
 
 export type HeatmapContentNodeProps = {
     tileElement: Record<string, any>
+}
+
+interface customCardColors {
+    positiveColor?:string
+    negativeColor?: string
+    zeroColor?: string
 }
 
 interface HeatmapViewProps {
@@ -30,6 +37,8 @@ interface HeatmapViewProps {
     tileAnimation?: boolean
     resetFilter?: boolean
     hideFilters?: boolean
+    cardColors?: customCardColors
+    borderColors?: customCardColors
 }
 
 export const Heatmap = (props: HeatmapViewProps) => {
@@ -45,10 +54,14 @@ export const Heatmap = (props: HeatmapViewProps) => {
         filterKey,
         tileAnimation,
         resetFilter,
-        hideFilters
+        hideFilters,
+        cardColors,
+        borderColors
     } = props;
 
-    const heatmapFiltersList: Array<HeatmapFilter> = heatmapFilters && heatmapFilters.length ? heatmapFilters : getDefaultHeatmapFilters();
+    const heatmapFiltersList: Array<HeatmapFilter> = heatmapFilters && heatmapFilters.length
+        ? heatmapFilters 
+        : getDefaultHeatmapFilters(cardColors, borderColors);
 
     const [
         selectedFilterIndex,
@@ -57,27 +70,29 @@ export const Heatmap = (props: HeatmapViewProps) => {
 
     const handleResetFilter = () => {
         setSelectedFilterIndex(-1);
-    }
+    };
 
     useEffect(() => {
         if (resetFilter) {
             handleResetFilter();
         }
-    }, [resetFilter]);
+    }, [
+        resetFilter
+    ]);
 
     const applyFilter = () => {
         if (selectedFilterIndex === -1)
             return heatmapList;
         else if (filterKey) {
-            const selectedFilter = heatmapFiltersList[selectedFilterIndex];
+            const selectedFilter = heatmapFiltersList[ selectedFilterIndex ];
             const filtered = heatmapList.filter((item) => {
-                const changeValue = parseFloat(item[filterKey]);
+                const changeValue = parseFloat(item[ filterKey ]);
                 return selectedFilter.filterCondition(changeValue);
             });
             return filtered;
         }
-        else
-            return [];
+        return [
+        ];
     };
 
     const getFilteredSymbols = (inx: number) => {
@@ -90,24 +105,31 @@ export const Heatmap = (props: HeatmapViewProps) => {
 
     const getTileCategoryClass = (value: string) => {
         const chngValue = parseFloat(value);
-        const matchingFilter = heatmapFiltersList.find(filter => filter.filterCondition(chngValue));
+        const matchingFilter = heatmapFiltersList.find((filter) => {
+            return filter.filterCondition(chngValue); 
+        });
 
         if (matchingFilter && matchingFilter.className)
             return matchingFilter.className;
-        else
-            return "";
+        return "";
     };
 
     const getTileStyles = (value: string) => {
         const chngValue = parseFloat(value);
-        const matchingFilter = heatmapFiltersList.find(filter => filter.filterCondition(chngValue));
+        const matchingFilter = heatmapFiltersList.find((filter) => {
+            return filter.filterCondition(chngValue); 
+        });
 
-        const tileStyle: React.CSSProperties = { backgroundColor: "transparent", opacity: 1 };
+        const tileStyle: React.CSSProperties = 
+        { backgroundColor: "transparent", borderColor: "transparent", opacity: 1 };
 
         if (matchingFilter && matchingFilter.backgroundColor)
-            tileStyle.backgroundColor = matchingFilter.backgroundColor
+            tileStyle.backgroundColor = matchingFilter.backgroundColor;
         if (matchingFilter && matchingFilter.opacity)
-            tileStyle.opacity = matchingFilter.opacity
+            tileStyle.opacity = matchingFilter.opacity;
+        if (matchingFilter && matchingFilter.borderColor) {
+            tileStyle.borderColor = matchingFilter.borderColor;
+        }
 
         return tileStyle;
     };
@@ -118,26 +140,34 @@ export const Heatmap = (props: HeatmapViewProps) => {
         <div className="heatmap-container">
             {!hideFilters && <div className="heatmap-filter-container">
                 <div className="heatmap-filters">
-                    {heatmapFiltersList.map((filter, index) => (
-                        <Button
-                            key={index}
-                            className="filter-box"
-                            style={{ color: textColor }}
-                            onClick={() => getFilteredSymbols(index)}
-                        >
-                            <div
-                                className={`filter-bg ${filter.className} ${selectedFilterIndex === index ? "selected-filter" : ""}`}
-                                style={{
-                                    backgroundColor: filter.backgroundColor ? filter.backgroundColor : "transparent",
-                                    opacity: filter.opacity ? filter.opacity : 1,
+                    {heatmapFiltersList.map((filter, index) => {
+                        return (
+                            <Button
+                                key={index}
+                                className="filter-box"
+                                style={{ color: textColor }}
+                                onClick={() => {
+                                    return getFilteredSymbols(index); 
                                 }}
                             >
-                            </div>
-                            <div className="filter-content">
-                                {filter.label}
-                            </div>
-                        </Button>
-                    ))}
+                                <div
+                                    className={`
+                                        filter-bg ${filter.className} 
+                                        ${selectedFilterIndex === index ? "selected-filter" : ""}`}
+                                    style={{
+                                        backgroundColor: filter.backgroundColor ? 
+                                            filter.backgroundColor
+                                            : "transparent",
+                                        opacity: filter.opacity ? filter.opacity : 1,
+                                    }}
+                                >
+                                </div>
+                                <div className="filter-content">
+                                    {filter.label}
+                                </div>
+                            </Button>
+                        ); 
+                    })}
                 </div>
             </div>}
             <div
@@ -148,31 +178,35 @@ export const Heatmap = (props: HeatmapViewProps) => {
                 }}
             >
                 {heatmapTiles.length
-                    ? heatmapTiles.map((item, index) => (
-                        <Grow key={index} in timeout={tileAnimation ? (100 * index) : 0}>
-                            <div
-                                className="heatmap-card"
-                                style={{
-                                    height: tileHeight
-                                }}
-                            >
+                    ? heatmapTiles.map((item, index) => {
+                        return (
+                            <Grow key={index} in timeout={tileAnimation ? (100 * index) : 0}>
                                 <div
-                                    className={`transparency-wrapper ${filterKey && getTileCategoryClass(item[filterKey])}`}
-                                    style={filterKey ? getTileStyles(item[filterKey]) : undefined}
-                                >
-                                </div>
-                                <div
-                                    className="card-wrapper"
+                                    className="heatmap-card"
                                     style={{
-                                        color: textColor
+                                        height: tileHeight
                                     }}
-                                    onClick={() => handleTileClick && handleTileClick(item)}>
-                                    <ContentNode tileElement={item} />
+                                >
+                                    <div
+                                        className={`transparency-wrapper 
+                                            ${filterKey && getTileCategoryClass(item[ filterKey ])}`}
+                                        style={filterKey ? getTileStyles(item[ filterKey ]) : {}}
+                                    >
+                                    </div>
+                                    <div
+                                        className="card-wrapper"
+                                        style={{
+                                            color: textColor
+                                        }}
+                                        onClick={() => {
+                                            return handleTileClick && handleTileClick(item); 
+                                        }}>
+                                        <ContentNode tileElement={item} />
+                                    </div>
                                 </div>
-                            </div>
-                        </Grow>
-                    )
-                    )
+                            </Grow>
+                        ); 
+                    })
                     : <>{emptyContentNode}</>}
             </div >
         </div>
