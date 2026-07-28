@@ -39,6 +39,7 @@ interface HeatmapViewProps {
     hideFilters?: boolean
     cardColors?: customCardColors
     borderColors?: customCardColors
+    isOpacityApply?:boolean
 }
 
 export const Heatmap = (props: HeatmapViewProps) => {
@@ -56,7 +57,8 @@ export const Heatmap = (props: HeatmapViewProps) => {
         resetFilter,
         hideFilters,
         cardColors,
-        borderColors
+        borderColors,
+        isOpacityApply = true
     } = props;
 
     const heatmapFiltersList: Array<HeatmapFilter> = heatmapFilters && heatmapFilters.length
@@ -121,12 +123,12 @@ export const Heatmap = (props: HeatmapViewProps) => {
         });
 
         const tileStyle: React.CSSProperties = 
-        { backgroundColor: "transparent", borderColor: "transparent", opacity: 1 };
+        { background: "transparent", borderColor: "transparent", opacity: 1 };
 
         if (matchingFilter && matchingFilter.backgroundColor)
-            tileStyle.backgroundColor = matchingFilter.backgroundColor;
+            tileStyle.background = matchingFilter.backgroundColor;
         if (matchingFilter && matchingFilter.opacity)
-            tileStyle.opacity = matchingFilter.opacity;
+            tileStyle.opacity = isOpacityApply ? matchingFilter.opacity : 1;
         if (matchingFilter && matchingFilter.borderColor) {
             tileStyle.borderColor = matchingFilter.borderColor;
         }
