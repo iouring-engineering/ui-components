@@ -131,6 +131,8 @@ export const Heatmap = (props: HeatmapViewProps) => {
             tileStyle.opacity = isOpacityApply ? matchingFilter.opacity : 1;
         if (matchingFilter && matchingFilter.borderColor) {
             tileStyle.borderColor = matchingFilter.borderColor;
+            tileStyle.borderWidth = "1px";
+            tileStyle.borderStyle = "solid";
         }
 
         return tileStyle;
@@ -157,9 +159,12 @@ export const Heatmap = (props: HeatmapViewProps) => {
                                         filter-bg ${filter.className} 
                                         ${selectedFilterIndex === index ? "selected-filter" : ""}`}
                                     style={{
-                                        backgroundColor: filter.backgroundColor ? 
+                                        background: filter.backgroundColor ? 
                                             filter.backgroundColor
                                             : "transparent",
+                                        borderWidth: filter.borderColor ? "1px" : "0px",
+                                        borderStyle: "solid",
+                                        borderColor: filter.borderColor ? filter.borderColor: "transparent",
                                         opacity: filter.opacity ? filter.opacity : 1,
                                     }}
                                 >
