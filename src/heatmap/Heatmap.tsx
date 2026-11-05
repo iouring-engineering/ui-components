@@ -19,7 +19,7 @@ export type HeatmapContentNodeProps = {
 }
 
 interface customCardColors {
-    positiveColor?:string
+    positiveColor?: string
     negativeColor?: string
     zeroColor?: string
 }
@@ -39,7 +39,8 @@ interface HeatmapViewProps {
     hideFilters?: boolean
     cardColors?: customCardColors
     borderColors?: customCardColors
-    isOpacityApply?:boolean
+    isOpacityApply?: boolean
+    isMultipleSelect?: boolean
 }
 
 export const Heatmap = (props: HeatmapViewProps) => {
@@ -58,20 +59,29 @@ export const Heatmap = (props: HeatmapViewProps) => {
         hideFilters,
         cardColors,
         borderColors,
-        isOpacityApply = true
+        isOpacityApply = true,
+        isMultipleSelect = false
     } = props;
 
     const heatmapFiltersList: Array<HeatmapFilter> = heatmapFilters && heatmapFilters.length
-        ? heatmapFilters 
+        ? heatmapFilters
         : getDefaultHeatmapFilters(cardColors, borderColors);
 
+
+    /// const [
+    //     selectedFilterIndex,
+    //     setSelectedFilterIndex
+    // ] = useState(-1);
+
     const [
-        selectedFilterIndex,
-        setSelectedFilterIndex
-    ] = useState(-1);
+        selectedFilterIndex, setSelectedFilterIndex
+    ] = useState<number[]>([
+    ]);
 
     const handleResetFilter = () => {
-        setSelectedFilterIndex(-1);
+        ///setSelectedFilterIndex(-1);
+        setSelectedFilterIndex([
+        ]);
     };
 
     useEffect(() => {
@@ -83,13 +93,15 @@ export const Heatmap = (props: HeatmapViewProps) => {
     ]);
 
     const applyFilter = () => {
-        if (selectedFilterIndex === -1)
+        if (selectedFilterIndex.length === 0)
             return heatmapList;
         else if (filterKey) {
-            const selectedFilter = heatmapFiltersList[ selectedFilterIndex ];
+            ///const selectedFilter = heatmapFiltersList[ selectedFilterIndex ];
             const filtered = heatmapList.filter((item) => {
                 const changeValue = parseFloat(item[ filterKey ]);
-                return selectedFilter.filterCondition(changeValue);
+                return selectedFilterIndex.some((inx) => {
+                    return heatmapFiltersList[inx].filterCondition(changeValue);
+                });
             });
             return filtered;
         }
@@ -97,18 +109,37 @@ export const Heatmap = (props: HeatmapViewProps) => {
         ];
     };
 
+
     const getFilteredSymbols = (inx: number) => {
-        if (selectedFilterIndex === inx) {
-            setSelectedFilterIndex(-1);
+        if (isMultipleSelect) {
+            setSelectedFilterIndex((prev) => {
+                return prev.includes(inx)
+                    ? prev.filter((item) => {
+                        return item !== inx;
+                    })
+                    : [
+                        ...prev, inx
+                    ];
+            });
         } else {
-            setSelectedFilterIndex(inx);
+            setSelectedFilterIndex((prev) => {
+                return prev.includes(inx)
+                    ? [
+                    ]
+                    : [
+                        inx
+                    ];
+            });
         }
+
+
     };
+
 
     const getTileCategoryClass = (value: string) => {
         const chngValue = parseFloat(value);
         const matchingFilter = heatmapFiltersList.find((filter) => {
-            return filter.filterCondition(chngValue); 
+            return filter.filterCondition(chngValue);
         });
 
         if (matchingFilter && matchingFilter.className)
@@ -119,11 +150,11 @@ export const Heatmap = (props: HeatmapViewProps) => {
     const getTileStyles = (value: string) => {
         const chngValue = parseFloat(value);
         const matchingFilter = heatmapFiltersList.find((filter) => {
-            return filter.filterCondition(chngValue); 
+            return filter.filterCondition(chngValue);
         });
 
-        const tileStyle: React.CSSProperties = 
-        { background: "transparent", borderColor: "transparent", opacity: 1 };
+        const tileStyle: React.CSSProperties =
+            { background: "transparent", borderColor: "transparent", opacity: 1 };
 
         if (matchingFilter && matchingFilter.backgroundColor)
             tileStyle.background = matchingFilter.backgroundColor;
@@ -151,20 +182,20 @@ export const Heatmap = (props: HeatmapViewProps) => {
                                 className="filter-box"
                                 style={{ color: textColor }}
                                 onClick={() => {
-                                    return getFilteredSymbols(index); 
+                                    return getFilteredSymbols(index);
                                 }}
                             >
                                 <div
                                     className={`
                                         filter-bg ${filter.className} 
-                                        ${selectedFilterIndex === index ? "selected-filter" : ""}`}
+                                        ${selectedFilterIndex.includes(index) ? "selected-filter" : ""}`}
                                     style={{
-                                        background: filter.backgroundColor ? 
+                                        background: filter.backgroundColor ?
                                             filter.backgroundColor
                                             : "transparent",
                                         borderWidth: filter.borderColor ? "1px" : "0px",
                                         borderStyle: "solid",
-                                        borderColor: filter.borderColor ? filter.borderColor: "transparent",
+                                        borderColor: filter.borderColor ? filter.borderColor : "transparent",
                                         opacity: filter.opacity ? filter.opacity : 1,
                                     }}
                                 >
@@ -173,7 +204,7 @@ export const Heatmap = (props: HeatmapViewProps) => {
                                     {filter.label}
                                 </div>
                             </Button>
-                        ); 
+                        );
                     })}
                 </div>
             </div>}
